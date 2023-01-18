@@ -1,0 +1,30 @@
+PS C:\Users\sergi\OneDrive\cuenta\Escritorio\ProyectoFinalGrupo14Backend> git checkout sergio
+Already on 'sergio'
+PS C:\Users\sergi\OneDrive\cuenta\Escritorio\ProyectoFinalGrupo14Backend> git add .       
+PS C:\Users\sergi\OneDrive\cuenta\Escritorio\ProyectoFinalGrupo14Backend> git status      
+On branch sergio
+nothing to commit, working tree clean
+n dev
+It : Cannot process argument transformation on parameter 'test'. Cannot convert the       
+"dev" value of type "System.String" to type "System.Management.Automation.ScriptBlock".   
+At line:1 char:19
++ it push -u origin dev
++                   ~~~
+    + CategoryInfo          : InvalidData: (:) [It], ParameterBindingArgumentTransformat  
+   ionException
+    + FullyQualifiedErrorId : ParameterArgumentTransformationError,It
+ 
+PS C:\Users\sergi\OneDrive\cuenta\Escritorio\ProyectoFinalGrupo14Backend> git push -u origin dev
+error: src refspec dev does not match any
+error: failed to push some refs to 'https://github.com/Arthaz1245/ProyectoFinalGrupo14Backend.git'
+PS C:\Users\sergi\OneDrive\cuenta\Escritorio\ProyectoFinalGrupo14Backend> git push -u origin sergio
+Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
+remote:
+remote: Create a pull request for 'sergio' on GitHub by visiting:
+remote:      https://github.com/Arthaz1245/ProyectoFinalGrupo14Backend/pull/new/sergio    
+remote:
+To https://github.com/Arthaz1245/ProyectoFinalGrupo14Backend.git
+ * [new branch]      sergio -> sergio
+Branch 'sergio' set up to track remote branch 'sergio' from 'origin'.
+PS C:\Users\sergi\OneDrive\cuenta\Escritorio\ProyectoFinalGrupo14Backend> git branch      
+  development
