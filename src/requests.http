@@ -13,7 +13,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3001/books HTTP/1.1
+GET http://localhost:3001/usersgit  HTTP/1.1
 
 ###
 GET http://localhost:9000/api/users/63c75a099dd2602b1a1f5b68 HTTP/1.1
