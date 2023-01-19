@@ -1,15 +1,32 @@
+
 ###
-POST http://localhost:3001/books HTTP/1.1
+POST http://localhost:3001/users HTTP/1.1
 Content-Type: application/json
 
 {
-    "publishDate": "January 15",
-    "title": "shawn of the dead",
-    "author": "pepito perez",
-    "genre": "horror",
-    "description": "la calle de su madrettttttttttttttttttttttttttttttttttttretrtretert",
-    "pageCount": 312,
-    "price":500000,
-    "image":"https://vertabelo.com/blog/best-books-for-database-modeling/1.png"
+    "rol": "client",
+    "name": "Terminator",
+    "email": "terminator@gmail.com",
+    "password": "thetermi",
+    "address": "skynet 255",
+    "phoneNumber": 155666999
 }
 
+###
+GET http://localhost:3001/books HTTP/1.1
+
+###
+GET http://localhost:9000/api/users/63c75a099dd2602b1a1f5b68 HTTP/1.1
+
+###
+PUT http://localhost:9000/api/users/63c761023c35108cf9aeca46 HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Terminator",
+    "age": 39,
+    "email": "terminator@gmail.com"
+}
+
+###
+DELETE http://localhost:9000/api/users/63c761023c35108cf9aeca46 HTTP/1.1
