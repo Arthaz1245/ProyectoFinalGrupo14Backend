@@ -1,12 +1,15 @@
 const express = require("express");
-const userRoutes = require("./routes/routeuser");
+const routes = require("./routes/index");
+
 require("dotenv").config();
 const mongoose = require("mongoose");
 
 const app = express();
 const port = process.env.PORT || 3001;
 app.use(express.json());
-app.use("/", userRoutes);
+console.log(routes);
+app.use("/", routes);
+
 app.get("/", (req, res) => {
   res.send("Welcome to my app");
 });

@@ -1,43 +1,63 @@
 const express = require("express");
 const router = express.Router();
-const userSchema = require("../models/user");
+const bookSchema = require("../models/book");
 
-router.post("/users", (req, res) => {
-  const user = userSchema(req.body);
-  user
+router.post("/books", (req, res) => {
+  const book = bookSchema(req.body);
+  book
     .save()
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });
-router.get("/users", (req, res) => {
-  userSchema
+router.get("/books", (req, res) => {
+  bookSchema
     .find()
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });
 
-router.get("/users/:id", (req, res) => {
+router.get("/books/:id", (req, res) => {
   const { id } = req.params;
-  userSchema
+  bookSchema
     .findById(id)
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });
-router.put("/users/:id", (req, res) => {
+router.put("/books/:id", (req, res) => {
   const { id } = req.params;
-  const { userType, name, email, password, address, phoneNumber } = req.body;
-  userSchema
+  const {
+    publishDate,
+    title,
+    author,
+    genre,
+    description,
+    pageCount,
+    price,
+    image,
+  } = req.body;
+  bookSchema
     .updateOne(
       { _id: id },
-      { $set: { userType, name, email, password, address, phoneNumber } }
+      {
+        $set: {
+          publishDate,
+          title,
+          author,
+          genre,
+          description,
+          pageCount,
+          price,
+          image,
+        },
+      }
     )
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });
 
-router.delete("/users/:id", (req, res) => {
+router.delete("/books/:id", (req, res) => {
   const { id } = req.params;
-  userSchema
+  bookSchema
     .deleteOne({ _id: id })
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));

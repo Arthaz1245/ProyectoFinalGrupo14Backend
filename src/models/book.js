@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-const booksSchema = mongoose.Schema({
+const bookSchema = mongoose.Schema({
   publishDate: {
-    type: Date,
+    type: String,
     required: true,
   },
   title: {
@@ -22,7 +22,7 @@ const booksSchema = mongoose.Schema({
     required: true,
   },
   pageCount: {
-    type: Integer,
+    type: Number,
     required: true,
   },
   price: {
@@ -34,4 +34,4 @@ const booksSchema = mongoose.Schema({
     required: true,
   },
 });
-module.exports = mongoose.model("Books", booksSchema);
+module.exports = mongoose.model("Book", bookSchema);

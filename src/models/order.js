@@ -22,4 +22,4 @@ const userSchema = mongoose.Schema({
     required: true,
   },
 });
-module.exports = mongoose.model("order", userSchema);
+module.exports = mongoose.model("Order", userSchema);
