@@ -1,0 +1,13 @@
+###
+POST http://localhost:3001/users HTTP/1.1
+Content-Type: application/json
+
+{
+    "userType": "admin",
+    "name": "elpibe",
+    "email": "terminator@gmail.com",
+    "password": "ratablanca159-",
+    "address": "la calle de su madre",
+    "phoneNumber": 3157508012
+}
+
