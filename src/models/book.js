@@ -5,6 +5,7 @@ const bookSchema = mongoose.Schema(
     publishDate: {
       type: String,
       required: true,
+      default: new Date().toISOString().split("T")[0],
     },
     title: {
       type: String,
@@ -15,7 +16,7 @@ const bookSchema = mongoose.Schema(
       required: true,
     },
     genre: {
-      type: String,
+      type: Array,
       required: true,
     },
     description: {
@@ -35,6 +36,6 @@ const bookSchema = mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: false }
+  { minimize: false }
 );
 module.exports = mongoose.model("Book", bookSchema);
