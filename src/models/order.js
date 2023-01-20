@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema(
       default: "processing",
     },
     items: {
-      type: Array,
+      type: Number,
       required: true,
     },
     totalAmount: {
@@ -27,6 +27,6 @@ const userSchema = mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: false }
+  { minimize: false }
 );
 module.exports = mongoose.model("Order", userSchema);
