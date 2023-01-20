@@ -21,8 +21,14 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cloudinary": "^1.33.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "mongoose": "^6.8.4"
+    "mongoose": "^6.8.4",
+    "socket.io": "^4.5.4",
+    "stripe": "^11.7.0",
+    "validator": "^13.7.0"
   }
 }

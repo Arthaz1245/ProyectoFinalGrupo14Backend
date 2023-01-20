@@ -8,15 +8,15 @@ const userSchema = mongoose.Schema(
     },
     name: {
       type: String,
-      require: true,
+      required: true,
     },
     status: {
       type: String,
-      require: true,
+      default: "processing",
     },
     items: {
       type: Array,
-      require: true,
+      required: true,
     },
     totalAmount: {
       type: Number,
