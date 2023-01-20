@@ -8,15 +8,15 @@ const userSchema = mongoose.Schema(
     },
     name: {
       type: String,
-      require: true,
+      required: true,
     },
     status: {
       type: String,
-      require: true,
+      default: "processing",
     },
     items: {
-      type: Array,
-      require: true,
+      type: Number,
+      required: true,
     },
     totalAmount: {
       type: Number,
@@ -27,6 +27,6 @@ const userSchema = mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: false }
+  { minimize: false }
 );
 module.exports = mongoose.model("Order", userSchema);
