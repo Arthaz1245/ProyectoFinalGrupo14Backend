@@ -5,13 +5,20 @@ Content-Type: application/json
 
 {  
     "name": "Sergio Mendoza",
-    "email": "sergiomendozap96@gmail.com",
+    "email": "sergiomendozap@gmail.com",
     "password": "thetermi",
 }
 
-
 ###
-GET http://localhost:3001/usersgit  HTTP/1.1
+POST http://localhost:3001/users/login HTTP/1.1
+Content-Type: application/json
+
+{  
+    "email": "sergiomendozap@gmail.com",
+    "password": "thetermi",
+}
+###
+GET http://localhost:3001/users  HTTP/1.1
 
 ###
 POST http://localhost:3001/books HTTP/1.1

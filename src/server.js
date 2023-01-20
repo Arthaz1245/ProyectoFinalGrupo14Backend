@@ -12,6 +12,6 @@ app.get("/", (req, res) => {
 });
 
 module.exports = {
-    app,
-    port
-}
+  app,
+  port,
+};

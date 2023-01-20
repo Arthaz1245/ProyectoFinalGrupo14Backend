@@ -2,42 +2,44 @@ const express = require("express");
 const router = express.Router();
 const userSchema = require("../models/user");
 
-router.post("/users/signup", async (req, res) => {
+router.post("/signup", async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    const user = userSchema.create({ name, email, password });
-    res.status(200).json(user);
+    const user = await userSchema.create({ name, email, password });
+    res.json(user);
+    console.log(user);
   } catch (error) {
-    res.status(400).json("Error to create the acccount", error);
+    res.status(400).send(error.message);
   }
 });
-router.post("/users/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findByCredentials(email, password);
-    res.status(200), json(user);
+    const user = await userSchema.findByCredentials(email, password);
+    console.log(user);
+    res.json(user);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+router.get("/", async (req, res) => {
+  try {
+    const users = await userSchema.find({ isAdmin: false }).populate("orders");
+    res.json(users);
   } catch (e) {
     res.status(400).send(e.message);
   }
 });
-
-router.get("/users", (req, res) => {
-  userSchema
-    .find()
-    .then((data) => res.json(data))
-    .catch((error) => res.json({ message: error }));
-});
-
-router.get("/users/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   const { id } = req.params;
   userSchema
     .findById(id)
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });
-router.put("/users/:id", (req, res) => {
+router.put("/:id", (req, res) => {
   const { id } = req.params;
   const { rol, name, email, password, address, phoneNumber } = req.body;
   userSchema
@@ -49,7 +51,7 @@ router.put("/users/:id", (req, res) => {
     .catch((error) => res.json({ message: error }));
 });
 
-router.delete("/users/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
   const { id } = req.params;
   userSchema
     .deleteOne({ _id: id })

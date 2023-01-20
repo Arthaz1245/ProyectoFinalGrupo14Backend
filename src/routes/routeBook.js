@@ -23,7 +23,7 @@ router.get("/books/:id", (req, res) => {
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });
-router.put("/books/:id", (req, res) => {
+router.put("/books:id", (req, res) => {
   const { id } = req.params;
   const {
     publishDate,
