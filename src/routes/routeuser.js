@@ -2,13 +2,27 @@ const express = require("express");
 const router = express.Router();
 const userSchema = require("../models/user");
 
-router.post("/users", (req, res) => {
-  const user = userSchema(req.body);
-  user
-    .save()
-    .then((data) => res.json(data))
-    .catch((error) => res.json({ message: error }));
+router.post("/users/signup", async (req, res) => {
+  const { name, email, password } = req.body;
+
+  try {
+    const user = userSchema.create({ name, email, password });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(400).json("Error to create the acccount", error);
+  }
 });
+router.post("/users/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findByCredentials(email, password);
+    res.status(200), json(user);
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
+
 router.get("/users", (req, res) => {
   userSchema
     .find()

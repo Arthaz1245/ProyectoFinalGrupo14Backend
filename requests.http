@@ -1,20 +1,17 @@
 
 ###
-POST http://localhost:3001/users HTTP/1.1
+POST http://localhost:3001/users/signup HTTP/1.1
 Content-Type: application/json
 
-{
-    "rol": "client",
-    "name": "Terminator",
-    "email": "terminator@gmail.com",
+{  
+    "name": "Sergio Mendoza",
+    "email": "sergiomendozap96@gmail.com",
     "password": "thetermi",
-    "address": "skynet 255",
-    "phoneNumber": 155666999
 }
 
 
 ###
-GET http://localhost:3001/books HTTP/1.1
+GET http://localhost:3001/usersgit  HTTP/1.1
 
 ###
 POST http://localhost:3001/books HTTP/1.1
