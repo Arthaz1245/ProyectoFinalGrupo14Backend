@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-
+const bcrypt = require("bcrypt");
 const userSchema = mongoose.Schema(
   {
     rolAdmin: {
       type: Boolean,
-      required: true,
+
       default: false,
     },
     name: {
@@ -28,11 +28,9 @@ const userSchema = mongoose.Schema(
     },
     address: {
       type: String,
-      required: true,
     },
     phoneNumber: {
       type: Number,
-      required: true,
     },
 
     cart: {
@@ -45,4 +43,37 @@ const userSchema = mongoose.Schema(
   },
   { minimize: false }
 );
-module.exports = mongoose.model("User", userSchema);
+userSchema.statics.findByCredentials = async function (email, password) {
+  const user = await User.findOne({ email });
+  if (!user) throw new Error("User not found");
+  const isSamePassword = bcrypt.compareSync(password, user.password);
+  if (isSamePassword) return user;
+  throw new Error("invalid credentials");
+};
+userSchema.methods.toJSON = function () {
+  const user = this;
+  const userObject = user.toObject();
+  delete userObject.password;
+  return userObject;
+};
+//Validar si este metodo se ejecuta si el dato es nuevo o esta siendo modificado
+//Antes de guardar la password se hashea
+const saltRounds = 10;
+
+userSchema.pre("save", function (next) {
+  if (this.isModified("password") || this.isNew) {
+    const user = this;
+    bcrypt.hash(user.password, saltRounds, function (err, hash) {
+      if (err) return next(err);
+
+      user.password = hash;
+      next();
+    });
+  } else {
+    next();
+  }
+});
+
+
+const User = mongoose.model("User", userSchema);
+module.exports = User;

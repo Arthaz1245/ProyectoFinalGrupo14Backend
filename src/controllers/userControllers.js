@@ -1,13 +1,13 @@
 const User = require("../models/user");
 
 const createUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, address, phoneNumber } = req.body;
 
   try {
-    const user = User.create({ name, email, password });
+    const user = User.create({ name, email, password, address, phoneNumber });
     res.status(200).json(user);
   } catch (error) {
-    res.status(400).json("Error to create the acccount", error);
+    res.status(400).json({ error: 'Error creating account' });
   }
 };
 
@@ -16,7 +16,7 @@ const loginUser = async (req, res) => {
 
   try {
     const user = await User.findByCredentials(email, password);
-    res.status(200), json(user);
+    res.status(200).json(user);
   } catch (e) {
     res.status(400).send(e.message);
   }
