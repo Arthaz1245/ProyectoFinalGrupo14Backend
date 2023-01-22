@@ -4,7 +4,7 @@ const createUser = async (req, res) => {
   const { name, email, password, address, phoneNumber } = req.body;
 
   try {
-    const userFind = User.findOne(email);
+    const userFind = await User.findOne({email});
     if (userFind)
       return res
         .status(400)
