@@ -36,6 +36,6 @@ const bookSchema = mongoose.Schema(
       required: true,
     },
   },
-  { minimize: false }
+  { versionKey: false }
 );
 module.exports = mongoose.model("Book", bookSchema);
