@@ -5,10 +5,45 @@ Content-Type: application/json
 
 {  
     "name": "Sergio Mendoza",
+<<<<<<< HEAD
     "email": "sergiomendozap@gmail.com",
+=======
+    "email": "sergiomendozap86@gmail.com",
+>>>>>>> 65ac8e27afc51ca4e0d847cd2fd561d7b378ad33
     "password": "thetermi",
+    "address" : "Calle 10 a barcelona",
+    "phoneNumber" : 3124445791
+}
+###
+POST http://localhost:3001/users/login HTTP/1.1
+Content-Type: application/json
+
+{  
+    "email": "sergiomendozap86@gmail.com",
+    "password": "thetermi"
 }
 
+<<<<<<< HEAD
+=======
+
+###
+GET http://localhost:3001/users  HTTP/1.1
+
+###
+POST http://localhost:3001/books HTTP/1.1
+Content-Type: application/json
+
+{
+    "publishDate": "January 12, 1995",
+    "title": "hola",
+    "author":"hola",
+    "genre": "Fantasy",
+    "description": "Timestamp ctimestamp. This can be handy for recording when a document has been modified or added.",
+    "pageCount": 1500,
+    "price": 6000,
+    "image": "https://vertabelo.com/blog/best-books-for-database-modeling/1.png"
+}
+>>>>>>> 65ac8e27afc51ca4e0d847cd2fd561d7b378ad33
 ###
 POST http://localhost:3001/users/login HTTP/1.1
 Content-Type: application/json
