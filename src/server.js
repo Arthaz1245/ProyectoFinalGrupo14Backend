@@ -1,6 +1,6 @@
 const express = require("express");
-const book = require("./routes/routeBook");
-const user = require("./routes/routeUser");
+const book = require("./routes/routeBook.js");
+const user = require("./routes/routeuser.js");
 const cors = require("cors");
 
 const app = express();
