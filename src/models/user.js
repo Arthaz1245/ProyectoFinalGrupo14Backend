@@ -4,7 +4,6 @@ const userSchema = mongoose.Schema(
   {
     rolAdmin: {
       type: Boolean,
-
       default: false,
     },
     name: {
@@ -26,9 +25,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    address: {
-      type: String,
-    },
+
     phoneNumber: {
       type: Number,
     },
@@ -59,17 +56,20 @@ userSchema.methods.toJSON = function () {
 //Validar si este metodo se ejecuta si el dato es nuevo o esta siendo modificado
 //Antes de guardar la password se hashea
 userSchema.pre("save", function (next) {
-  if (this.isModified("password") || this.isNew) {
-    const user = this;
+  const user = this;
+
+  if (!user.isModified("password")) return next();
+
+  bcrypt.genSalt(10, function (err, salt) {
+    if (err) return next(err);
+
     bcrypt.hash(user.password, salt, function (err, hash) {
       if (err) return next(err);
 
       user.password = hash;
       next();
     });
-  } else {
-    next();
-  }
+  });
 });
 
 const User = mongoose.model("User", userSchema);
