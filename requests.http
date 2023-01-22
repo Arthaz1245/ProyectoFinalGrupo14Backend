@@ -6,10 +6,14 @@ Content-Type: application/json
 {  
     "name": "Sergio Mendoza",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "email": "sergiomendozap@gmail.com",
 =======
     "email": "sergiomendozap86@gmail.com",
 >>>>>>> 65ac8e27afc51ca4e0d847cd2fd561d7b378ad33
+=======
+    "email": "sergio1126623d@gmail.com",
+>>>>>>> 900166fc035e564d08fc1521472257dcb948464a
     "password": "thetermi",
     "address" : "Calle 10 a barcelona",
     "phoneNumber" : 3124445791
