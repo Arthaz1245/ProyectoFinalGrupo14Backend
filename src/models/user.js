@@ -41,8 +41,9 @@ const userSchema = mongoose.Schema(
       },
     },
   },
-  { minimize: false }
+  { versionKey: false }
 );
+
 userSchema.statics.findByCredentials = async function (email, password) {
   const user = await User.findOne({ email });
   if (!user) throw new Error("User not found");
@@ -73,7 +74,6 @@ userSchema.pre("save", function (next) {
     next();
   }
 });
-
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
