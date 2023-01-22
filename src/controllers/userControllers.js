@@ -4,7 +4,7 @@ const createUser = async (req, res) => {
   const { name, email, password, address, phoneNumber } = req.body;
 
   try {
-    const userFind = User.findOne(email);
+    const userFind = await User.findOne({ email });
     if (userFind)
       return res
         .status(400)
@@ -15,7 +15,6 @@ const createUser = async (req, res) => {
     res.status(400).json({ error: "Error creating account" });
   }
 };
-
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
