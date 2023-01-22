@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const orderSchema = mongoose.Schema(
+const userSchema = mongoose.Schema(
   {
     date: {
       type: Date,
@@ -29,4 +29,4 @@ const orderSchema = mongoose.Schema(
   },
   { versionKey: false }
 );
-module.exports = mongoose.model("Order", orderSchema);
+module.exports = mongoose.model("Order", userSchema);

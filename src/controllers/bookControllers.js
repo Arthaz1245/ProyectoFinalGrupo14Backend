@@ -2,36 +2,33 @@ const Book = require("../models/book");
 
 const searchBook = (req, res) => {
   const { q } = req.query;
-  Book
-    .find({
-      $or: [
-        { title: { $regex: q, $options: "i" } }, //para buscar por palabra exacta: `^${q}$`
-        { author: { $regex: q, $options: "i" } },
-      ],
-    })
+  Book.find({
+    $or: [
+      { title: { $regex: q, $options: "i" } }, //para buscar por palabra exacta: `^${q}$`
+      { author: { $regex: q, $options: "i" } },
+    ],
+  })
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 };
 
 const searchBookByTitle = (req, res) => {
   const { q } = req.query;
-  Book
-    .find({
-      title: { $regex: q, $options: "i" },
-    })
+  Book.find({
+    title: { $regex: q, $options: "i" },
+  })
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 };
 
 const searchBookByAuthor = (req, res) => {
-    const { q } = req.query;
-    Book
-      .find({
-        author: { $regex: q, $options: "i" },
-      })
-      .then((data) => res.json(data))
-      .catch((error) => res.json({ message: error }));
-  };
+  const { q } = req.query;
+  Book.find({
+    author: { $regex: q, $options: "i" },
+  })
+    .then((data) => res.json(data))
+    .catch((error) => res.json({ message: error }));
+};
 
 const createBook = (req, res) => {
   const book = new Book(req.body);
@@ -100,5 +97,5 @@ module.exports = {
   deleteBook,
   searchBook,
   searchBookByTitle,
-  searchBookByAuthor
+  searchBookByAuthor,
 };

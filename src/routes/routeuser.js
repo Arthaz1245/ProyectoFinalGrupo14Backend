@@ -7,7 +7,7 @@ const {
   getUserById,
   updateUser,
   deleteUser,
-} = require("../controllers/bookControllers");
+} = require("../controllers/userControllers");
 
 router.post("/signup", createUser);
 router.post("/login", loginUser);

@@ -4,6 +4,7 @@ const userSchema = mongoose.Schema(
   {
     rolAdmin: {
       type: Boolean,
+
       default: false,
     },
     name: {
@@ -45,7 +46,6 @@ const userSchema = mongoose.Schema(
 
 userSchema.statics.findByCredentials = async function (email, password) {
   const user = await User.findOne({ email });
-
   if (!user) throw new Error("User not found");
   const isSamePassword = bcrypt.compareSync(password, user.password);
   if (isSamePassword) return user;
