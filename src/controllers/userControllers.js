@@ -17,7 +17,6 @@ const createUser = async (req, res) => {
     res.status(400).json({ error: "Error creating account" });
   }
 };
-
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
