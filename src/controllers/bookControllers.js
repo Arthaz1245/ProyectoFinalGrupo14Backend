@@ -54,35 +54,25 @@ const getBookById = (req, res) => {
     .catch((error) => res.json({ message: error }));
 };
 
-const updateBook = (req, res) => {
-  const { id } = req.params;
-  const {
-    publishDate,
-    title,
-    author,
-    genre,
-    description,
-    pageCount,
-    price,
-    image,
-  } = req.body;
-  Book.updateOne(
-    { _id: id },
-    {
-      $set: {
-        publishDate,
-        title,
-        author,
-        genre,
-        description,
-        pageCount,
-        price,
-        image,
-      },
-    }
-  )
-    .then((data) => res.json(data))
-    .catch((error) => res.json({ message: error }));
+const updateBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const update = {};
+
+    if (req.body.publishDate) update['publishDate'] = req.body.publishDate;
+    if (req.body.title) update['title'] = req.body.title;
+    if (req.body.author) update['author'] = req.body.author;
+    if (req.body.genre) update['genre'] = req.body.genre;
+    if (req.body.description) update['description'] = req.body.description;
+    if (req.body.pageCount) update['pageCount'] = req.body.pageCount;
+    if (req.body.price) update['price'] = req.body.price;
+    if (req.body.image) update['image'] = req.body.image;
+
+    const data = await Book.updateOne({ _id: id }, { $set: update });
+    res.json(data);
+  } catch (error) {
+    res.json({ message: error });
+  }
 };
 
 const deleteBook = (req, res) => {

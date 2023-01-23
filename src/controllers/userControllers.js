@@ -4,13 +4,15 @@ const createUser = async (req, res) => {
   const { name, email, password, address, phoneNumber } = req.body;
 
   try {
-    const userFind = await User.findOne({email});
+    const userFind = await User.findOne({ email });
     if (userFind)
       return res
         .status(400)
         .send("Error user register already with that email.");
-    const user = User.create({ name, email, password, address, phoneNumber });
-    res.status(200).json(user);
+    const user = new User({ name, email, password, address, phoneNumber });
+    await user.save();
+
+    return res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ error: "Error creating account" });
   }
@@ -40,15 +42,23 @@ const getUserById = (req, res) => {
     .catch((error) => res.json({ message: error }));
 };
 
-const updateUser = (req, res) => {
-  const { id } = req.params;
-  const { rol, name, email, password, address, phoneNumber } = req.body;
-  User.updateOne(
-    { _id: id },
-    { $set: { rol, name, email, password, address, phoneNumber } }
-  )
-    .then((data) => res.json(data))
-    .catch((error) => res.json({ message: error }));
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const update = {};
+
+    if (req.body.rol) update['rol'] = req.body.rol;
+    if (req.body.name) update['name'] = req.body.name;
+    if (req.body.email) update['email'] = req.body.email;
+    if (req.body.password) update['password'] = req.body.password;
+    if (req.body.address) update['address'] = req.body.address;
+    if (req.body.phoneNumber) update['phoneNumber'] = req.body.phoneNumber;
+
+    const data = await User.updateOne({ _id: id }, { $set: update });
+    res.json(data);
+  } catch (error) {
+    res.json({ message: error });
+  }
 };
 
 const deleteUser = (req, res) => {
