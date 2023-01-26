@@ -1,5 +1,6 @@
 const Book = require("../models/book");
-const uploadImage = require("../utils/cloudinary");
+const { uploadImage, deleteImage } = require("../utils/cloudinary");
+const fs = require("fs-extra");
 
 const searchBook = (req, res) => {
   const { q } = req.query;
@@ -53,6 +54,7 @@ const createBook = async (req, res) => {
       pageCount,
       price,
       stock,
+      stock,
     });
 
     if (req.files?.image) {
@@ -61,6 +63,7 @@ const createBook = async (req, res) => {
         public_id: result.public_id,
         secure_url: result.secure_url,
       };
+      await fs.unlink(req.files.image.tempFilePath);
     }
 
     await book.save();
@@ -106,11 +109,23 @@ const updateBook = async (req, res) => {
   }
 };
 
-const deleteBook = (req, res) => {
-  const { id } = req.params;
-  Book.deleteOne({ _id: id })
-    .then((data) => res.json(data))
-    .catch((error) => res.json({ message: error }));
+const deleteBook = async (req, res) => {
+  try {
+    const book = await Book.findByIdAndDelete(req.params.id);
+
+    if (!book)
+      return res.status(404).json({
+        message: "Book does not exist",
+      });
+
+    if (book.image?.public_id) {
+      await deleteImage(book.image.public_id);
+    }
+
+    return res.json(book);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 //ruta para carrito
