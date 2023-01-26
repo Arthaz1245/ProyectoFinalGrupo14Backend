@@ -2,6 +2,14 @@ const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema(
   {
+    books: {
+      type: Object,
+    },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     date: {
       type: Date,
       required: true,

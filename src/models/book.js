@@ -7,9 +7,11 @@ const bookSchema = mongoose.Schema(
       required: true,
       default: new Date().toISOString().split("T")[0],
     },
+    inCart: { type: Boolean, default: false },
     title: {
       type: String,
       required: true,
+      unique: true,
     },
     author: {
       type: String,

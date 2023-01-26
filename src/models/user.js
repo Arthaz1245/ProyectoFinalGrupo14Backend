@@ -33,13 +33,7 @@ const userSchema = mongoose.Schema(
       type: Number,
     },
 
-    cart: {
-      type: Object,
-      default: {
-        total: 0,
-        count: 0,
-      },
-    },
+    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
   },
   { versionKey: false }
 );
@@ -74,6 +68,9 @@ userSchema.pre("save", function (next) {
     next();
   }
 });
-
+//antes de que se remueva de la database
+userSchema.pre("remove", function (next) {
+  this.model("Order").remove({ owner: this._id }, next);
+});
 const User = mongoose.model("User", userSchema);
 module.exports = User;

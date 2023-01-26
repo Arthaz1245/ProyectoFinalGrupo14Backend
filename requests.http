@@ -27,7 +27,7 @@ Content-Type: application/json
 
 {
     "publishDate": "January 12, 1995",
-    "title": "hola",
+    "title": "pruebitta",
     "author":"hola",
     "genre": "Fantasy",
     "description": "Timestamp ctimestamp. This can be handy for recording when a document has been modified or added.",
@@ -41,7 +41,7 @@ Content-Type: application/json
 
 {
     "publishDate": "January 13, 1995",
-    "title": "Harry Matas",
+    "title": "Hola",
     "author":"Jk rOWLING",
     "genre": ["Fantasy", "Action"],
     "description": "Timggdgdgstamp ctimestamp. This can be handy for recording when a document has been modified or added.",
@@ -52,3 +52,14 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:9000/api/users/63c761023c35108cf9aeca46 HTTP/1.1
+
+
+###
+POST http://localhost:3001/cart
+
+Content-Type: application/json
+
+{
+ "title": "Hola",
+ "price": 30000
+}
