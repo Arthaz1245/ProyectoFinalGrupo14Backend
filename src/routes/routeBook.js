@@ -1,4 +1,5 @@
 const express = require("express");
+const fileUpload = require("express-fileupload");
 const router = express.Router();
 const {
   createBook,
@@ -11,7 +12,14 @@ const {
   searchBookByAuthor,
 } = require("../controllers/bookControllers");
 
-router.post("/", createBook);
+router.post(
+  "/",
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "./uploads",
+  }),
+  createBook
+);
 router.get("/", getBooks);
 router.get("/search", searchBook);
 router.get("/search/title", searchBookByTitle);
