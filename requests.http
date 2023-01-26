@@ -27,7 +27,7 @@ Content-Type: application/json
 
 {
     "publishDate": "January 12, 1995",
-    "title": "pruebitta",
+    "title": "pruebitta2",
     "author":"hola",
     "genre": "Fantasy",
     "description": "Timestamp ctimestamp. This can be handy for recording when a document has been modified or added.",
@@ -60,6 +60,6 @@ POST http://localhost:3001/cart
 Content-Type: application/json
 
 {
- "title": "Hola",
+ "title": "pruebitta2",
  "price": 30000
 }
