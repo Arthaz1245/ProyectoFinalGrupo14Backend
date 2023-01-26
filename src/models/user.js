@@ -4,7 +4,6 @@ const userSchema = mongoose.Schema(
   {
     rolAdmin: {
       type: Boolean,
-
       default: false,
     },
     name: {
@@ -32,8 +31,6 @@ const userSchema = mongoose.Schema(
     phoneNumber: {
       type: Number,
     },
-
-    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
   },
   { versionKey: false }
 );

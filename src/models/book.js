@@ -34,12 +34,19 @@ const bookSchema = mongoose.Schema(
       required: true,
     },
     image: {
-      type: String,
-      required: true,
+      public_id: String,
+      secure_url: String,
     },
-    quantityInStock: {
+    rating: {
       type: Number,
-      required: true,
+    },
+    stock: {
+      type: Number,
+      require: true,
+    },
+    stock: {
+      type: Number,
+      require: true,
     },
   },
   { versionKey: false }
