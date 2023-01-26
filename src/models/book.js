@@ -10,6 +10,7 @@ const bookSchema = mongoose.Schema(
     title: {
       type: String,
       required: true,
+      unique: true,
     },
     author: {
       type: String,
@@ -32,9 +33,16 @@ const bookSchema = mongoose.Schema(
       required: true,
     },
     image: {
-      type: String,
-      required: true,
+      public_id: String,
+      secure_url: String,
     },
+    rating: {
+      type: Number,
+    },
+    stock: {
+      type: Number,
+      require: true,
+    }
   },
   { versionKey: false }
 );
