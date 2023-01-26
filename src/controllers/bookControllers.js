@@ -49,6 +49,7 @@ const createBook = async (req, res) => {
     pageCount,
     price,
     image,
+    quantityInStock,
   } = req.body;
 
   try {
@@ -64,6 +65,7 @@ const createBook = async (req, res) => {
       pageCount,
       price,
       image,
+      quantityInStock,
     });
     await book.save();
 
@@ -99,7 +101,7 @@ const updateBook = async (req, res) => {
     if (req.body.pageCount) update["pageCount"] = req.body.pageCount;
     if (req.body.price) update["price"] = req.body.price;
     if (req.body.image) update["image"] = req.body.image;
-
+    if (req.body.quantityInStock) update["image"] = req.body.quantityInStock;
     const data = await Book.updateOne({ _id: id }, { $set: update });
     res.json(data);
   } catch (error) {

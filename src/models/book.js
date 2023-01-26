@@ -37,6 +37,10 @@ const bookSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    quantityInStock: {
+      type: Number,
+      required: true,
+    },
   },
   { versionKey: false }
 );
