@@ -31,6 +31,9 @@ const userSchema = mongoose.Schema(
     phoneNumber: {
       type: Number,
     },
+    myPurchases: {
+      type: Array
+    }
   },
   { versionKey: false }
 );
