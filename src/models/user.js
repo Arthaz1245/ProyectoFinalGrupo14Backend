@@ -32,8 +32,8 @@ const userSchema = mongoose.Schema(
       type: Number,
     },
     myPurchases: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   { versionKey: false }
 );
@@ -41,9 +41,9 @@ const userSchema = mongoose.Schema(
 userSchema.statics.findByCredentials = async function (email, password) {
   const user = await User.findOne({ email });
   if (!user) throw new Error("User not found");
-  const isSamePassword = bcrypt.compareSync(password, user.password);
+  const isSamePassword = await bcrypt.compare(password, user.password);
   if (isSamePassword) return user;
-  throw new Error("invalid credentials");
+  throw new Error("Invalid credentials");
 };
 userSchema.methods.toJSON = function () {
   const user = this;
@@ -68,6 +68,9 @@ userSchema.pre("save", function (next) {
     next();
   }
 });
-
+//antes de que se remueva de la database
+userSchema.pre("remove", function (next) {
+  this.model("Order").remove({ owner: this._id }, next);
+});
 const User = mongoose.model("User", userSchema);
 module.exports = User;

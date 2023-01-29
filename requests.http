@@ -1,11 +1,9 @@
-
-###
 POST http://localhost:3001/users/signup HTTP/1.1
 Content-Type: application/json
 
 {  
     "name": "Sergio Mendoza",
-    "email": "sergio1126623d@gmail.com",
+    "email": "samuel@gmail.com",
     "password": "thetermi",
     "address" : "Calle 10 a barcelona",
     "phoneNumber" : 3124445791
@@ -15,7 +13,7 @@ POST http://localhost:3001/users/login HTTP/1.1
 Content-Type: application/json
 
 {  
-    "email": "sergiomendozap86@gmail.com",
+    "email": "samuel@gmail.com",
     "password": "thetermi"
 }
 
@@ -29,7 +27,7 @@ Content-Type: application/json
 
 {
     "publishDate": "January 12, 1995",
-    "title": "hola",
+    "title": "pruebitta2",
     "author":"hola",
     "genre": "Fantasy",
     "description": "Timestamp ctimestamp. This can be handy for recording when a document has been modified or added.",
@@ -43,9 +41,9 @@ Content-Type: application/json
 
 {
     "publishDate": "January 13, 1995",
-    "title": "Harry Matas",
+    "title": "Hola",
     "author":"Jk rOWLING",
-    "genre": "Fantasy",
+    "genre": ["Fantasy", "Action"],
     "description": "Timggdgdgstamp ctimestamp. This can be handy for recording when a document has been modified or added.",
     "pageCount": 150,
     "price": 30000,
@@ -54,3 +52,14 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:9000/api/users/63c761023c35108cf9aeca46 HTTP/1.1
+
+
+###
+POST http://localhost:3001/cart
+
+Content-Type: application/json
+
+{
+ "title": "pruebitta2",
+ "price": 30000
+}

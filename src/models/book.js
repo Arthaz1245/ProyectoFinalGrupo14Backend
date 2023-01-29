@@ -42,7 +42,7 @@ const bookSchema = mongoose.Schema(
     stock: {
       type: Number,
       require: true,
-    }
+    },
   },
   { versionKey: false }
 );
