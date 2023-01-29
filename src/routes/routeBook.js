@@ -28,6 +28,4 @@ router.get("/:id", getBookById);
 router.put("/:id", updateBook);
 router.delete("/:id", deleteBook);
 
-//carrito
-
 module.exports = router;

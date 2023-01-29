@@ -54,7 +54,6 @@ const createBook = async (req, res) => {
       pageCount,
       price,
       stock,
-      stock,
     });
 
     if (req.files?.image) {
@@ -127,8 +126,6 @@ const deleteBook = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
-//ruta para carrito
 
 module.exports = {
   createBook,

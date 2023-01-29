@@ -32,8 +32,8 @@ const userSchema = mongoose.Schema(
       type: Number,
     },
     myPurchases: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   { versionKey: false }
 );

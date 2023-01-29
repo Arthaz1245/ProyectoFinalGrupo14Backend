@@ -3,12 +3,7 @@ const mongoose = require("mongoose");
 const userSchema = mongoose.Schema(
   {
     books: {
-      type: Object,
-    },
-    owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+      type: Array,
     },
     date: {
       type: Date,
@@ -22,11 +17,8 @@ const userSchema = mongoose.Schema(
       type: String,
       default: "processing",
     },
-    items: {
-      type: Number,
-      required: true,
-    },
-    totalAmount: {
+
+    totalValue: {
       type: Number,
       required: true,
     },
