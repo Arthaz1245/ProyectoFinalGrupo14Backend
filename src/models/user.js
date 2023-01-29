@@ -4,7 +4,6 @@ const userSchema = mongoose.Schema(
   {
     rolAdmin: {
       type: Boolean,
-
       default: false,
     },
     name: {
@@ -32,14 +31,9 @@ const userSchema = mongoose.Schema(
     phoneNumber: {
       type: Number,
     },
-
-    cart: {
-      type: Object,
-      default: {
-        total: 0,
-        count: 0,
-      },
-    },
+    myPurchases: {
+      type: Array
+    }
   },
   { versionKey: false }
 );
