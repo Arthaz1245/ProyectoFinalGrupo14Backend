@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const nodemailer = require("nodemailer");
 const Mailgen = require("mailgen");
+const bcrypt = require("bcrypt");
 const createUser = async (req, res) => {
   const { name, email, password, address, phoneNumber } = req.body;
   try {
@@ -88,9 +89,14 @@ const loginUser = async (req, res) => {
 
   try {
     const user = await User.findByCredentials(email, password);
+    !user && res.status(404).json({ msg: "Invalid email it doesnt exist" });
+
+    const validPassword = await bcrypt.compare(req.body.password, user.pass);
+    !validPassword &&
+      res.status(400).json({ msg: "Invalid email it doesnt exist" });
     res.status(200).json(user);
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(500).send(e.message);
   }
 };
 
