@@ -91,7 +91,10 @@ const loginUser = async (req, res) => {
     const user = await User.findByCredentials(email, password);
     !user && res.status(404).json({ msg: "Invalid email it doesnt exist" });
 
-    const validPassword = await bcrypt.compare(req.body.password, user.pass);
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
     !validPassword &&
       res.status(400).json({ msg: "Invalid email it doesnt exist" });
     res.status(200).json(user);
