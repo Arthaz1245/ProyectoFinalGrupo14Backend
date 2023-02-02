@@ -99,7 +99,7 @@ const updateBook = async (req, res) => {
     if (req.body.pageCount) update["pageCount"] = req.body.pageCount;
     if (req.body.price) update["price"] = req.body.price;
     if (req.body.image) update["image"] = req.body.image;
-    if (req.body.stock) update["stock"] = req.body.image;
+    if (req.body.stock) update["stock"] = req.body.stock;
 
     const data = await Book.updateOne({ _id: id }, { $set: update });
     res.json(data);
@@ -127,6 +127,26 @@ const deleteBook = async (req, res) => {
   }
 };
 
+const decreaseBookStock = async (req, res) => {
+  try {
+    const { title } = req.params;
+
+    const { stock } = req.body;
+    const update = {};
+
+    const findBook = await Book.findOne({ title });
+    console.log(findBook);
+    const updateStock = findBook.stock - stock;
+    if (stock) update["stock"] = updateStock;
+    const addSells = findBook.sells + stock;
+    update["sells"] = addSells;
+    const data = await Book.updateOne({ title }, { $set: update });
+    res.json(data);
+  } catch (error) {
+    res.json({ message: error });
+  }
+};
+
 module.exports = {
   createBook,
   getBooks,
@@ -136,4 +156,5 @@ module.exports = {
   searchBook,
   searchBookByTitle,
   searchBookByAuthor,
+  decreaseBookStock,
 };

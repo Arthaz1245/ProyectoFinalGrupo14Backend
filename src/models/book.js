@@ -43,6 +43,10 @@ const bookSchema = mongoose.Schema(
       type: Number,
       require: true,
     },
+    sells: {
+      type: Number,
+      default: 0,
+    },
   },
   { versionKey: false }
 );
