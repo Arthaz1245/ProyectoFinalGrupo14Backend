@@ -6,7 +6,7 @@ const orderSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    books: {
+    booksBought: {
       type: Array,
       default: [],
     },

@@ -138,6 +138,8 @@ const decreaseBookStock = async (req, res) => {
     console.log(findBook);
     const updateStock = findBook.stock - stock;
     if (stock) update["stock"] = updateStock;
+    const addSells = findBook.sells + stock;
+    update["sells"] = addSells;
     const data = await Book.updateOne({ title }, { $set: update });
     res.json(data);
   } catch (error) {
