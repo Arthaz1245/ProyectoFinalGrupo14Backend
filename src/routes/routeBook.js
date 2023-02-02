@@ -7,6 +7,7 @@ const {
   getBookById,
   updateBook,
   deleteBook,
+  decreaseBookStock,
   searchBook,
   searchBookByTitle,
   searchBookByAuthor,
@@ -26,6 +27,8 @@ router.get("/search/title", searchBookByTitle);
 router.get("/search/author", searchBookByAuthor);
 router.get("/:id", getBookById);
 router.put("/:id", updateBook);
+router.put("/decreaseStock/:title", decreaseBookStock);
+
 router.delete("/:id", deleteBook);
 
 module.exports = router;

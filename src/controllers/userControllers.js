@@ -60,30 +60,7 @@ const createUser = async (req, res) => {
 
   //return res.status(200).json(user);
 };
-//  let testAccount = await nodemailer.createTestAccount();
-//  const transporter = nodemailer.createTransport({
-//    host: "smtp.ethereal.email",
-//    port: 587,
-//    auth: {
-//      user: "alda37@ethereal.email",
-//      pass: "JESMzm8VRvg5pgyqn3",
-//    },
-//  });
-//  let message = {
-//    from: '"Fred Foo 👻" <foo@example.com>', // sender address
-//    to: "bar@example.com, baz@example.com", // list of receivers
-//    subject: "Hello ✔", // Subject line
-//    text: "Hello world?", // plain text body
-//    html: "<b>Hello world?</b>", // html body
-//  };
-//  transporter
-//    .sendMail(message)
-//    .then(() => {
-//      return res.status(201).json({ msg: "you should recieve a message " });
-//    })
-//    .catch((error) => {
-//      res.status(500).json({ error });
-//    });
+
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -117,21 +94,35 @@ const getUserById = (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const update = {};
+  const {
+    body: { userId },
+    params: { id },
+  } = req;
+  if (userId === id || req.user.rolAdmin) {
+    try {
+      const update = {};
 
-    if (req.body.rol) update["rol"] = req.body.rol;
-    if (req.body.name) update["name"] = req.body.name;
-    if (req.body.email) update["email"] = req.body.email;
-    if (req.body.password) update["password"] = req.body.password;
-    if (req.body.address) update["address"] = req.body.address;
-    if (req.body.phoneNumber) update["phoneNumber"] = req.body.phoneNumber;
+      if (req.body.rol) update["rol"] = req.body.rol;
+      if (req.body.name) update["name"] = req.body.name;
+      if (req.body.email) update["email"] = req.body.email;
+      if (req.body.password) {
+        try {
+          const salt = await bcrypt.genSalt(10);
+          req.body.password = await bcrypt.hash(req.body.password, salt);
+        } catch (error) {
+          return res.status(500).json({ message: error });
+        }
+      }
+      if (req.body.address) update["address"] = req.body.address;
+      if (req.body.phoneNumber) update["phoneNumber"] = req.body.phoneNumber;
 
-    const data = await User.updateOne({ _id: id }, { $set: update });
-    res.json(data);
-  } catch (error) {
-    res.json({ message: error });
+      const data = await User.updateOne({ _id: id }, { $set: update });
+      res.json(data);
+    } catch (error) {
+      res.json({ message: error });
+    }
+  } else {
+    return res.status(400).json({ msg: "You can only update your account" });
   }
 };
 
