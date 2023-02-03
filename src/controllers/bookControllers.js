@@ -127,26 +127,6 @@ const deleteBook = async (req, res) => {
   }
 };
 
-const decreaseBookStock = async (req, res) => {
-  try {
-    const { title } = req.params;
-
-    const { stock } = req.body;
-    const update = {};
-
-    const findBook = await Book.findOne({ title });
-    console.log(findBook);
-    const updateStock = findBook.stock - stock;
-    if (stock) update["stock"] = updateStock;
-    const addSells = findBook.sells + stock;
-    update["sells"] = addSells;
-    const data = await Book.updateOne({ title }, { $set: update });
-    res.json(data);
-  } catch (error) {
-    res.json({ message: error });
-  }
-};
-
 module.exports = {
   createBook,
   getBooks,
@@ -156,5 +136,4 @@ module.exports = {
   searchBook,
   searchBookByTitle,
   searchBookByAuthor,
-  decreaseBookStock,
 };
