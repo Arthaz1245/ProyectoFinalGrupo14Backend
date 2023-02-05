@@ -27,6 +27,19 @@ const createOrder = async (req, res) => {
     booksBought.map((bookBought) => {
       handleStock(bookBought.title, bookBought.quantity);
     });
+    const orderofBooks = booksBought.map((bookBought) => {
+      return (
+        "<p>" +
+        "<strong>title:</strong> " +
+        bookBought.title +
+        "<br>" +
+        "<strong>Quantity:</strong> " +
+        bookBought.quantity +
+        "</p>"
+      );
+    });
+    const orderofBook = orderofBooks.join("");
+    //const jsonData = JSON.stringify(booksBought);
     const email = user.email;
     const order = new Order({ userId, booksBought: [...booksBought], total });
 
@@ -54,7 +67,7 @@ const createOrder = async (req, res) => {
           data: [
             {
               email: `${email}`,
-
+              products: "<html><body>" + orderofBook + "</body></html>",
               total: `${total}`,
             },
           ],
