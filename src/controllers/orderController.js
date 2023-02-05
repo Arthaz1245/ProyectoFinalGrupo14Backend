@@ -24,6 +24,22 @@ const createOrder = async (req, res) => {
         .status(400)
         .send("Error only a registered user can have orders");
     }
+    booksBought.map((bookBought) => {
+      handleStock(bookBought.title, bookBought.quantity);
+    });
+    const orderofBooks = booksBought.map((bookBought) => {
+      return (
+        '<p style="background-color: lightblue; padding: 10px;">' +
+        '<strong style="color: navy;">title:</strong> ' +
+        bookBought.title +
+        "<br>" +
+        '<strong style="color: navy;">Quantity:</strong> ' +
+        bookBought.quantity +
+        "</p>"
+      );
+    });
+    const orderofBook = orderofBooks.join("");
+    //const jsonData = JSON.stringify(booksBought);
     const email = user.email;
     const order = new Order({ userId, booksBought: [...booksBought], total });
 
@@ -51,7 +67,7 @@ const createOrder = async (req, res) => {
           data: [
             {
               email: `${email}`,
-
+              products: "<html><body>" + orderofBook + "</body></html>",
               total: `${total}`,
             },
           ],
