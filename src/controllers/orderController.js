@@ -24,6 +24,9 @@ const createOrder = async (req, res) => {
         .status(400)
         .send("Error only a registered user can have orders");
     }
+    booksBought.map((bookBought) => {
+      handleStock(bookBought.title, bookBought.quantity);
+    });
     const email = user.email;
     const order = new Order({ userId, booksBought: [...booksBought], total });
 
