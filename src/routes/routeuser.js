@@ -8,6 +8,8 @@ const {
   getUserById,
   updateUser,
   deleteUser,
+  logicDelete,
+  unbannedUser,
 } = require("../controllers/userControllers");
 
 router.post(
@@ -30,5 +32,7 @@ router.put(
   updateUser
 );
 router.delete("/:id", deleteUser);
+router.delete("/:id/logicDelete", logicDelete);
+router.put("/:id/undo-delete", unbannedUser);
 
 module.exports = router;

@@ -97,6 +97,8 @@ const updateBook = async (req, res) => {
     if (req.body.genre) update["genre"] = req.body.genre;
     if (req.body.description) update["description"] = req.body.description;
     if (req.body.pageCount) update["pageCount"] = req.body.pageCount;
+    if (req.body.rating) update["rating"] = req.body.rating;
+
     if (req.body.price) update["price"] = req.body.price;
     if (req.body.image) update["image"] = req.body.image;
     if (req.body.stock) update["stock"] = req.body.stock;

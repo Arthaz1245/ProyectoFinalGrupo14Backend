@@ -37,7 +37,7 @@ const bookSchema = mongoose.Schema(
       secure_url: String,
     },
     rating: {
-      type: Number,
+      type: Array,
     },
     stock: {
       type: Number,
