@@ -2,9 +2,12 @@ const User = require("../models/user");
 const nodemailer = require("nodemailer");
 const Mailgen = require("mailgen");
 const bcrypt = require("bcrypt");
+const { uploadImage, deleteImage } = require("../utils/cloudinary");
+const fs = require("fs-extra");
+
 const createUser = async (req, res) => {
-  const { name, email, password, address, phoneNumber } = req.body;
   try {
+    const { name, email, password, address, phoneNumber } = req.body;
     const userFind = await User.findOne({ email });
     if (userFind)
       return res
@@ -12,6 +15,16 @@ const createUser = async (req, res) => {
         .send("Error user register already with that email.");
 
     const user = new User({ name, email, password, address, phoneNumber });
+
+    if (req.files?.image) {
+      const result = await uploadImage(req.files.image.tempFilePath);
+      user.image = {
+        public_id: result.public_id,
+        secure_url: result.secure_url,
+      };
+      await fs.unlink(req.files.image.tempFilePath);
+    }
+console.log(user)
     await user.save();
 
     let config = {
@@ -126,11 +139,23 @@ const updateUser = async (req, res) => {
   }
 };
 
-const deleteUser = (req, res) => {
-  const { id } = req.params;
-  User.deleteOne({ _id: id })
-    .then((data) => res.json(data))
-    .catch((error) => res.json({ message: error }));
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+
+    if (!user)
+      return res.status(404).json({
+        message: "User does not exist",
+      });
+
+    if (user.image?.public_id) {
+      await deleteImage(user.image.public_id);
+    }
+
+    return res.json(user);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 module.exports = {
