@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const fileUpload = require("express-fileupload");
 const {
   createUser,
   loginUser,
@@ -9,7 +10,14 @@ const {
   deleteUser,
 } = require("../controllers/userControllers");
 
-router.post("/signup", createUser);
+router.post(
+  "/signup",
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "./uploads",
+  }),
+  createUser
+);
 router.post("/login", loginUser);
 router.get("/", getUsers);
 router.get("/:id", getUserById);

@@ -10,6 +10,10 @@ const orderSchema = mongoose.Schema(
       type: Array,
       default: [],
     },
+    date: {
+      type: Date,
+      default: Date.now,
+    },
     total: {
       type: Number,
     },
