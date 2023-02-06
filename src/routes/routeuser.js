@@ -21,7 +21,14 @@ router.post(
 router.post("/login", loginUser);
 router.get("/", getUsers);
 router.get("/:id", getUserById);
-router.put("/:id", updateUser);
+router.put(
+  "/:id",
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "./uploads",
+  }),
+  updateUser
+);
 router.delete("/:id", deleteUser);
 
 module.exports = router;
