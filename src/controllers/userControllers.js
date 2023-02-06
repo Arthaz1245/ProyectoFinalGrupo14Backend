@@ -85,8 +85,11 @@ const loginUser = async (req, res) => {
       req.body.password,
       user.password
     );
-    !validPassword &&
-      res.status(400).json({ msg: "Invalid email it doesnt exist" });
+    !validPassword && res.status(400).json({ msg: "Invalid password" });
+
+    if (user.isDeleted === true) {
+      res.status(403).json({ msg: "Error this user has been banned" });
+    }
     res.status(200).json(user);
   } catch (e) {
     res.status(500).send(e.message);
@@ -111,7 +114,7 @@ const updateUser = async (req, res) => {
     body: { userId },
     params: { id },
   } = req;
-  
+
   if (userId === id) {
     try {
       const update = {};
@@ -128,6 +131,7 @@ const updateUser = async (req, res) => {
         }
       }
       if (req.body.address) update["address"] = req.body.address;
+      if (req.body.isDeleted) update["isDeleted"] = req.body.isDeleted;
       if (req.body.phoneNumber) update["phoneNumber"] = req.body.phoneNumber;
       if (req.files.image) {
         const user = await User.findById(id);

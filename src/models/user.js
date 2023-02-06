@@ -34,6 +34,10 @@ const userSchema = mongoose.Schema(
     myPurchases: {
       type: Array,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
     image: {
       public_id: String,
       secure_url: String,
