@@ -74,19 +74,84 @@ const createUser = async (req, res) => {
   //return res.status(200).json(user);
 };
 
+const senForgotPasswordEmail = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+
+  let config = {
+    service: "gmail",
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_PASSWORD,
+    },
+  };
+  let transporter = nodemailer.createTransport(config);
+  let MailGenerator = new Mailgen({
+    theme: "default",
+    product: {
+      name: "Mailgen",
+      link: "https://mailgen.js",
+    },
+  });
+  let response = {
+    body: {
+      intro: `You have requested a password reset.`,
+      table: {
+        data: [
+          {
+            email: `${user.email}`,
+          },
+        ],
+      },
+      action: {
+        instructions: `Click the button below to reset your password:`,
+        button: {
+          color: "#22BC66",
+          text: "Reset password",
+          link: `${process.env.APP_URL}/forgetPass/${id}`,
+        },
+      },
+    },
+  };
+  let mail = MailGenerator.generate(response);
+  let message = {
+    from: process.env.GMAIL_USER,
+    to: user.email,
+    subject: "Password reset request",
+    html: mail,
+  };
+  transporter
+    .sendMail(message)
+    .then(() => {
+      return res.status(200).json({
+        msg: "An email with password reset link has been sent to your email",
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
     const user = await User.findByCredentials(email, password);
-    !user && res.status(404).json({ msg: "Invalid email it doesnt exist" });
+    if (!user) {
+      return res.status(404).json({ msg: "Invalid email it doesnt exist" });
+    }
 
     const validPassword = await bcrypt.compare(
       req.body.password,
       user.password
     );
-    !validPassword &&
-      res.status(400).json({ msg: "Invalid email it doesnt exist" });
+    if (!validPassword) {
+      return res.status(400).json({ msg: "Invalid password" });
+    }
+
+    if (user.isDeleted === true) {
+      return res.status(404).json({ msg: "Error this user has been banned" });
+    }
+
     res.status(200).json(user);
   } catch (e) {
     res.status(500).send(e.message);
@@ -111,7 +176,7 @@ const updateUser = async (req, res) => {
     body: { userId },
     params: { id },
   } = req;
-  
+
   if (userId === id) {
     try {
       const update = {};
@@ -123,13 +188,15 @@ const updateUser = async (req, res) => {
         try {
           const salt = await bcrypt.genSalt(10);
           req.body.password = await bcrypt.hash(req.body.password, salt);
+          update["password"] = req.body.password;
         } catch (error) {
           return res.status(500).json({ message: error });
         }
       }
       if (req.body.address) update["address"] = req.body.address;
       if (req.body.phoneNumber) update["phoneNumber"] = req.body.phoneNumber;
-      if (req.files.image) {
+      if (req.body.isDeleted) update["isDeleted"] = req.body.isDeleted;
+      if (req.files && req.files.image) {
         const user = await User.findById(id);
         if (user.image?.public_id) {
           await deleteImage(user.image.public_id);
@@ -151,7 +218,38 @@ const updateUser = async (req, res) => {
     return res.status(400).json({ msg: "You can only update your account" });
   }
 };
+const logicDelete = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    user.isDeleted = true;
+    await user.save();
+    res.json({ message: "User banned" });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+const unbannedUser = async (req, res) => {
+  const { id } = req.params;
 
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    if (!user.isDeleted) {
+      return res.status(400).json({ message: "User has been unbanned" });
+    }
+    user.isDeleted = false;
+    await user.save();
+    res.json({ message: "The unbanned has been succesful" });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
 const deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
@@ -178,4 +276,7 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
+  logicDelete,
+  unbannedUser,
+  senForgotPasswordEmail,
 };

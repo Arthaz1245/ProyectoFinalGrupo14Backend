@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+// const jwt = require("jsonwebtoken");
 const userSchema = mongoose.Schema(
   {
     rolAdmin: {
@@ -25,6 +26,9 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    // resetToken: {
+    //   type: String,
+    // },
     address: {
       type: String,
     },
@@ -34,9 +38,17 @@ const userSchema = mongoose.Schema(
     myPurchases: {
       type: Array,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
     image: {
       public_id: String,
       secure_url: String,
+    },
+    date: {
+      type: Date,
+      default: Date.now,
     },
   },
   { versionKey: false }
@@ -72,6 +84,20 @@ userSchema.pre("save", function (next) {
     next();
   }
 });
+// userSchema.methods.generateResetToken = function () {
+//   const user = this;
+
+//   const resetToken = jwt.sign(
+//     { _id: user._id.toString() },
+//     process.env.JWT_SECRET,
+//     {
+//       expiresIn: "10m",
+//     }
+//   );
+
+//   user.resetToken = resetToken;
+//   return user.save();
+// };
 //antes de que se remueva de la database
 userSchema.pre("remove", function (next) {
   this.model("Order").remove({ owner: this._id }, next);

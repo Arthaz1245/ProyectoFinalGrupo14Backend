@@ -8,6 +8,11 @@ const {
   getUserById,
   updateUser,
   deleteUser,
+  logicDelete,
+  unbannedUser,
+  senForgotPasswordEmail,
+  // forgotPassword,
+  // resetPassword,
 } = require("../controllers/userControllers");
 
 router.post(
@@ -30,5 +35,10 @@ router.put(
   updateUser
 );
 router.delete("/:id", deleteUser);
+router.delete("/:id/logicDelete", logicDelete);
+router.put("/:id/undo-delete", unbannedUser);
+// router.post("/forgot-password", forgotPassword);
+// router.post("/reset-password/:resetToken", resetPassword);
+router.post("/forgotPassword/:id", senForgotPasswordEmail);
 
 module.exports = router;
