@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 const userSchema = mongoose.Schema(
   {
     rolAdmin: {
@@ -26,9 +26,9 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    resetToken: {
-      type: String,
-    },
+    // resetToken: {
+    //   type: String,
+    // },
     address: {
       type: String,
     },
@@ -80,20 +80,20 @@ userSchema.pre("save", function (next) {
     next();
   }
 });
-userSchema.methods.generateResetToken = function () {
-  const user = this;
+// userSchema.methods.generateResetToken = function () {
+//   const user = this;
 
-  const resetToken = jwt.sign(
-    { _id: user._id.toString() },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "10m",
-    }
-  );
+//   const resetToken = jwt.sign(
+//     { _id: user._id.toString() },
+//     process.env.JWT_SECRET,
+//     {
+//       expiresIn: "10m",
+//     }
+//   );
 
-  user.resetToken = resetToken;
-  return user.save();
-};
+//   user.resetToken = resetToken;
+//   return user.save();
+// };
 //antes de que se remueva de la database
 userSchema.pre("remove", function (next) {
   this.model("Order").remove({ owner: this._id }, next);
