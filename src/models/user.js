@@ -46,6 +46,10 @@ const userSchema = mongoose.Schema(
       public_id: String,
       secure_url: String,
     },
+    date: {
+      type: Date,
+      default: Date.now,
+    },
   },
   { versionKey: false }
 );
