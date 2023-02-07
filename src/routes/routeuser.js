@@ -10,6 +10,8 @@ const {
   deleteUser,
   logicDelete,
   unbannedUser,
+  forgotPassword,
+  resetPassword,
 } = require("../controllers/userControllers");
 
 router.post(
@@ -34,5 +36,7 @@ router.put(
 router.delete("/:id", deleteUser);
 router.delete("/:id/logicDelete", logicDelete);
 router.put("/:id/undo-delete", unbannedUser);
+// router.post("/forgot-password", forgotPassword);
+// router.post("/reset-password/:resetToken", resetPassword);
 
 module.exports = router;
