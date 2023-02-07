@@ -25,7 +25,14 @@ router.get("/search", searchBook);
 router.get("/search/title", searchBookByTitle);
 router.get("/search/author", searchBookByAuthor);
 router.get("/:id", getBookById);
-router.put("/:id", updateBook);
+router.put(
+  "/:id",
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "./uploads",
+  }),
+  updateBook
+);
 
 router.delete("/:id", deleteBook);
 
