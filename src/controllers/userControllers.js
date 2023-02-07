@@ -119,11 +119,12 @@ const updateUser = async (req, res) => {
     body: { userId },
     params: { id },
   } = req;
-  if (userId === id || req.user.rolAdmin) {
+
+  if (userId === id) {
     try {
       const update = {};
 
-      if (req.body.rol) update["rol"] = req.body.rol;
+      if (req.body.rolAdmin) update["rolAdmin"] = req.body.rolAdmin;
       if (req.body.name) update["name"] = req.body.name;
       if (req.body.email) update["email"] = req.body.email;
       if (req.body.password) {
@@ -136,17 +137,19 @@ const updateUser = async (req, res) => {
       }
       if (req.body.address) update["address"] = req.body.address;
       if (req.body.phoneNumber) update["phoneNumber"] = req.body.phoneNumber;
-      // if (req.files.image) {
-      //   if (user.image?.public_id) {
-      //     await deleteImage(user.image.public_id);
-      //   }
-      //   const result = await uploadImage(req.files.image.tempFilePath);
-      //   update["image"] = {
-      //     public_id: result.public_id,
-      //     secure_url: result.secure_url,
-      //   };
-      //   await fs.unlink(req.files.image.tempFilePath);
-      // }
+      if (req.files && req.files.image) {
+        const user = await User.findById(id);
+        if (user.image?.public_id) {
+          await deleteImage(user.image.public_id);
+        }
+        const result = await uploadImage(req.files.image.tempFilePath);
+        update["image"] = {
+          public_id: result.public_id,
+          secure_url: result.secure_url,
+        };
+        await fs.unlink(req.files.image.tempFilePath);
+      }
+
       const data = await User.updateOne({ _id: id }, { $set: update });
       res.json(data);
     } catch (error) {
