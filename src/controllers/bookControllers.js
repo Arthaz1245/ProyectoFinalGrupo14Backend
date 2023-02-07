@@ -102,17 +102,17 @@ const updateBook = async (req, res) => {
     if (req.body.price) update["price"] = req.body.price;
     if (req.body.stock) update["stock"] = req.body.stock;
     if (req.files && req.files.image) {
-      const user = await User.findById(id);
-      if (user.image?.public_id) {
-        await deleteImage(user.image.public_id);
+        const book = await Book.findById(id);
+        if (book.image?.public_id) {
+          await deleteImage(book.image.public_id);
+        }
+        const result = await uploadImage(req.files.image.tempFilePath);
+        update["image"] = {
+          public_id: result.public_id,
+          secure_url: result.secure_url,
+        };
+        await fs.unlink(req.files.image.tempFilePath);
       }
-      const result = await uploadImage(req.files.image.tempFilePath);
-      update["image"] = {
-        public_id: result.public_id,
-        secure_url: result.secure_url,
-      };
-      await fs.unlink(req.files.image.tempFilePath);
-    }
 
     const data = await Book.updateOne({ _id: id }, { $set: update });
     res.json(data);
