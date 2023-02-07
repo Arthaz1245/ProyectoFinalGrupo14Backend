@@ -37,7 +37,7 @@ const bookSchema = mongoose.Schema(
       secure_url: String,
     },
     rating: {
-      type: Array,
+      type: Number,
     },
     stock: {
       type: Number,
@@ -46,14 +46,6 @@ const bookSchema = mongoose.Schema(
     sells: {
       type: Number,
       default: 0,
-    },
-    date: {
-      type: Date,
-      default: Date.now,
-    },
-    isDeleted: {
-      type: Boolean,
-      default: false,
     },
   },
   { versionKey: false }
