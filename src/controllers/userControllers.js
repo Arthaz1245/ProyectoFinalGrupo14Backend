@@ -74,6 +74,63 @@ const createUser = async (req, res) => {
   //return res.status(200).json(user);
 };
 
+const senForgotPasswordEmail = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+
+  let config = {
+    service: "gmail",
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_PASSWORD,
+    },
+  };
+  let transporter = nodemailer.createTransport(config);
+  let MailGenerator = new Mailgen({
+    theme: "default",
+    product: {
+      name: "Mailgen",
+      link: "https://mailgen.js",
+    },
+  });
+  let response = {
+    body: {
+      intro: `You have requested a password reset.`,
+      table: {
+        data: [
+          {
+            email: `${user.email}`,
+          },
+        ],
+      },
+      action: {
+        instructions: `Click the button below to reset your password:`,
+        button: {
+          color: "#22BC66",
+          text: "Reset password",
+          link: `${process.env.APP_URL}/forgetPass/${id}`,
+        },
+      },
+    },
+  };
+  let mail = MailGenerator.generate(response);
+  let message = {
+    from: process.env.GMAIL_USER,
+    to: user.email,
+    subject: "Password reset request",
+    html: mail,
+  };
+  transporter
+    .sendMail(message)
+    .then(() => {
+      return res.status(200).json({
+        msg: "An email with password reset link has been sent to your email",
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -210,99 +267,6 @@ const deleteUser = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-// const forgotPassword = async (req, res) => {
-//   try {
-//     const { email } = req.body;
-//     const user = await User.findOne({ email });
-//     if (!user)
-//       return res.status(404).send("Error: user with that email not found.");
-
-//     const resetToken = user.generateResetToken();
-//     console.log(resetToken);
-//     await user.findOneAndUpdate;
-
-//     let config = {
-//       service: "gmail",
-//       auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_PASSWORD },
-//     };
-//     let transporter = nodemailer.createTransport(config);
-//     let MailGenerator = new Mailgen({
-//       theme: "default",
-//       product: {
-//         name: "Mailgen",
-//         link: "https://mailgen.js",
-//       },
-//     });
-//     let response = {
-//       body: {
-//         intro: `You have requested a password reset.`,
-//         table: {
-//           data: [
-//             {
-//               email: `${email}`,
-//             },
-//           ],
-//         },
-//         action: {
-//           instructions: `Click the button below to reset your password:`,
-//           button: {
-//             color: "#22BC66",
-//             text: "Reset password",
-//             link: `${process.env.APP_URL}/forgetPass/${resetToken}`,
-//           },
-//         },
-//       },
-//     };
-//     let mail = MailGenerator.generate(response);
-//     let message = {
-//       from: process.env.GMAIL_USER,
-//       to: email,
-//       subject: "Password reset request",
-//       html: mail,
-//     };
-//     transporter
-//       .sendMail(message)
-//       .then(() => {
-//         return res.status(200).json({
-//           msg: "An email with password reset link has been sent to your email",
-//         });
-//       })
-//       .catch((error) => {
-//         res.status(500).json({ error });
-//       });
-//   } catch (e) {
-//     res.status(400).send(e.message);
-//   }
-// };
-
-// const resetPassword = async (req, res) => {
-//   try {
-//     const { resetToken } = req.params;
-//     const { password } = req.body;
-//     const hashedToken = crypto
-//       .createHash("sha256")
-//       .update(resetToken)
-//       .digest("hex");
-
-//     const user = await User.findOne({
-//       passwordResetToken: hashedToken,
-//       passwordResetExpires: { $gt: Date.now() },
-//     });
-
-//     if (!user) return res.status(400).send("Error: token invalid or expired");
-
-//     user.password = password;
-//     user.passwordResetToken = undefined;
-//     user.passwordResetExpires = undefined;
-//     await user.findOneAndUpdate();
-
-//     return res
-//       .status(200)
-//       .json({ msg: "Password has been reset successfully" });
-//   } catch (e) {
-//     res.status(400).send(e.message);
-//   }
-// };
 
 module.exports = {
   createUser,
@@ -313,6 +277,5 @@ module.exports = {
   deleteUser,
   logicDelete,
   unbannedUser,
-  // forgotPassword,
-  // resetPassword,
+  senForgotPasswordEmail,
 };
