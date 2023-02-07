@@ -10,8 +10,8 @@ const {
   deleteUser,
   logicDelete,
   unbannedUser,
-  forgotPassword,
-  resetPassword,
+  // forgotPassword,
+  // resetPassword,
 } = require("../controllers/userControllers");
 
 router.post(
