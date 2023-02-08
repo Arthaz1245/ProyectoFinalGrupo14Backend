@@ -39,6 +39,10 @@ const bookSchema = mongoose.Schema(
     rating: {
       type: Array,
     },
+    ratingPorcentage: {
+      type: Number,
+      default: 0,
+    },
     stock: {
       type: Number,
       require: true,

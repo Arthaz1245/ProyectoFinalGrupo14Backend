@@ -139,7 +139,16 @@ const deleteBook = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+async function handleratingPercentage(rate, size, id) {
+  const findBook = await Book.findById(id);
+  const update = {};
 
+  const updateReview = (findBook.ratingPorcentage + rate) / size;
+  console.log(size);
+  console.log(updateReview);
+  if (rate) update["ratingPorcentage"] = updateReview;
+  await Book.updateOne({ _id: id }, { $set: update });
+}
 const addRating = async (req, res) => {
   try {
     const { id } = req.params;
@@ -152,10 +161,13 @@ const addRating = async (req, res) => {
     if (!book) {
       return res.status(404).send("Book not found");
     }
-
-    book.rating.push({ rate, comment, id });
+    const found = book.rating.find((r) => r.userId === userId);
+    if (found) {
+      return res.status(404).send("This user already give a review");
+    }
+    book.rating.push({ rate, comment, userId });
     book.save();
-
+    handleratingPercentage(rate, book.rating.length, id);
     return res.status(200).send("Ratings added successfully");
   } catch (error) {
     return res.status(500).send(error.message);
