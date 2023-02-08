@@ -10,6 +10,7 @@ const {
   searchBook,
   searchBookByTitle,
   searchBookByAuthor,
+  addRating,
 } = require("../controllers/bookControllers");
 
 router.post(
@@ -26,7 +27,7 @@ router.get("/search/title", searchBookByTitle);
 router.get("/search/author", searchBookByAuthor);
 router.get("/:id", getBookById);
 router.put("/:id", updateBook);
-
+router.post("/rating/:id", addRating);
 router.delete("/:id", deleteBook);
 
 module.exports = router;

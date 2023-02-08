@@ -1,7 +1,7 @@
 const Book = require("../models/book");
 const { uploadImage, deleteImage } = require("../utils/cloudinary");
 const fs = require("fs-extra");
-
+const User = require("../models/user");
 const searchBook = (req, res) => {
   const { q } = req.query;
   Book.find({
@@ -129,6 +129,27 @@ const deleteBook = async (req, res) => {
   }
 };
 
+const addRating = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rate, comment, userId } = req.body;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(400).send("Error only a registered user can review");
+    }
+    const book = await Book.findById(id);
+    if (!book) {
+      return res.status(404).send("Book not found");
+    }
+
+    book.rating.push({ rate, comment, id });
+    book.save();
+
+    return res.status(200).send("Ratings added successfully");
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
 module.exports = {
   createBook,
   getBooks,
@@ -138,4 +159,5 @@ module.exports = {
   searchBook,
   searchBookByTitle,
   searchBookByAuthor,
+  addRating,
 };
