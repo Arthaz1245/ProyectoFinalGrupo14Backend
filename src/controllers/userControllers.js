@@ -195,6 +195,7 @@ const updateUser = async (req, res) => {
       }
       if (req.body.address) update["address"] = req.body.address;
       if (req.body.phoneNumber) update["phoneNumber"] = req.body.phoneNumber;
+      if (req.body.isDeleted) update["isDeleted"] = req.body.isDeleted;
       if (req.files && req.files.image) {
         const user = await User.findById(id);
         if (user.image?.public_id) {

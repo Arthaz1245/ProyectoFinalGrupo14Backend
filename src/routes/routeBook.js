@@ -28,6 +28,15 @@ router.get("/search/author", searchBookByAuthor);
 router.get("/:id", getBookById);
 router.put("/:id", updateBook);
 router.post("/rating/:id", addRating);
+router.put(
+  "/:id",
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "./uploads",
+  }),
+  updateBook
+);
+
 router.delete("/:id", deleteBook);
 
 module.exports = router;
