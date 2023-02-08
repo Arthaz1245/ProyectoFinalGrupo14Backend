@@ -1,7 +1,7 @@
 const Book = require("../models/book");
 const { uploadImage, deleteImage } = require("../utils/cloudinary");
 const fs = require("fs-extra");
-
+const User = require("../models/user");
 const searchBook = (req, res) => {
   const { q } = req.query;
   Book.find({
@@ -139,7 +139,45 @@ const deleteBook = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+async function handleratingPercentage(rate, size, id) {
+  const findBook = await Book.findById(id);
+  const update = {};
 
+  const updateReview = findBook.rating.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.rate,
+    0
+  );
+  const total = updateReview / (size - 1);
+  const totalUnDecimal = parseFloat(total.toFixed(1));
+  if (rate) update["ratingPorcentage"] = totalUnDecimal;
+  await Book.updateOne({ _id: id }, { $set: update });
+}
+const addRating = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rate, comment, userId, name } = req.body;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(400).send("Error only a registered user can review");
+    }
+    const book = await Book.findById(id);
+    if (!book) {
+      return res.status(404).send("Book not found");
+    }
+    const found = book.rating.find((r) => r.userId === userId);
+    if (found) {
+      return res.status(404).send("This user already give a review");
+    }
+    if (rate > 5 || rate < 1)
+      return res.status(404).send("The rate is between 1 and 5");
+    book.rating.push({ rate, comment, userId, name });
+    book.save();
+    handleratingPercentage(rate, book.rating.length, id);
+    return res.status(200).send("Ratings added successfully");
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
 module.exports = {
   createBook,
   getBooks,
@@ -149,4 +187,5 @@ module.exports = {
   searchBook,
   searchBookByTitle,
   searchBookByAuthor,
+  addRating,
 };

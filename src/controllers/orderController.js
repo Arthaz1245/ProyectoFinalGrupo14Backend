@@ -8,8 +8,10 @@ async function handleStock(title, quantity) {
   const findBook = await Book.findOne({ title });
   const update = {};
   const updateStock = findBook.stock - quantity;
+
   if (quantity) update["stock"] = updateStock;
   const addSells = findBook.sells + quantity;
+
   update["sells"] = addSells;
   await Book.updateOne({ title }, { $set: update });
 }
