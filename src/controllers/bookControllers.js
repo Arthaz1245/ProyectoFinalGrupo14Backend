@@ -143,16 +143,19 @@ async function handleratingPercentage(rate, size, id) {
   const findBook = await Book.findById(id);
   const update = {};
 
-  const updateReview = (findBook.ratingPorcentage + rate) / size;
-  console.log(size);
-  console.log(updateReview);
-  if (rate) update["ratingPorcentage"] = updateReview;
+  const updateReview = findBook.rating.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.rate,
+    0
+  );
+  const total = updateReview / (size - 1);
+  const totalUnDecimal = parseFloat(total.toFixed(1));
+  if (rate) update["ratingPorcentage"] = totalUnDecimal;
   await Book.updateOne({ _id: id }, { $set: update });
 }
 const addRating = async (req, res) => {
   try {
     const { id } = req.params;
-    const { rate, comment, userId } = req.body;
+    const { rate, comment, userId, name } = req.body;
     const user = await User.findById(userId);
     if (!user) {
       return res.status(400).send("Error only a registered user can review");
@@ -165,7 +168,9 @@ const addRating = async (req, res) => {
     if (found) {
       return res.status(404).send("This user already give a review");
     }
-    book.rating.push({ rate, comment, userId });
+    if (rate > 5 || rate < 1)
+      return res.status(404).send("The rate is between 1 and 5");
+    book.rating.push({ rate, comment, userId, name });
     book.save();
     handleratingPercentage(rate, book.rating.length, id);
     return res.status(200).send("Ratings added successfully");
