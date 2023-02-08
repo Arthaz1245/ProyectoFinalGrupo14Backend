@@ -111,8 +111,24 @@ const getOrderById = (req, res) => {
     .catch((error) => res.json({ message: error }));
 };
 
+const deleteOrder = async (req, res) => {
+  try {
+    const order = await Order.findByIdAndDelete(req.params.id);
+
+    if (!order)
+      return res.status(404).json({
+        message: "Order does not exist",
+      });
+
+    return res.json(order);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createOrder,
   getAllOrders,
   getOrderById,
+  deleteOrder
 };
